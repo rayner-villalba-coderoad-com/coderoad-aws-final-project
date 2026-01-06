@@ -1,0 +1,83 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: Coderoad Final Project Presigned URL uploader API Gateway -> Lambda -> S3
+
+Globals:
+  Function:
+    Runtime: python3.12
+    Timeout: 30
+    MemorySize: 256
+    Architectures: [x86_64]
+
+Resources:
+  Api:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+  
+  ImagesBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub coderoad-images-${AWS::AccountId}-${AWS::Region}
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+  
+  LambdaS3Role:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub "coderoad-lambda-s3-role-${AWS::StackName}"
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        # Basic logging
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: S3PresignedUrlPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:PutObject
+                  - s3:GetObject
+                  - s3:ListBucket
+                Resource: !Sub "${ImagesBucket.Arn}/*"
+
+  GeneratePresignedUrlFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: app.handler
+      Role: !GetAtt LambdaS3Role.Arn
+      Environment:
+        Variables:
+          BUCKET_NAME: !Ref ImagesBucket
+      Events:
+        Create:
+          Type: Api
+          Properties:
+            RestApiId: !Ref Api
+            Path: /files
+            Method: POST         
+
+   
+Outputs:
+  BucketName:
+    Description: S3 bucket for images
+    Value: !Ref ImagesBucket
+  
+  LambdaRoleArn:
+    Description: IAM Role used by Lambda function
+    Value: !GetAtt LambdaS3Role.Arn
+
+  ApiBaseUrl:
+    Description: Base URL for the API stage
+    Value: !Sub "https://${Api}.execute-api.${AWS::Region}.amazonaws.com/prod"  
