@@ -18,7 +18,7 @@ Resources:
   ImagesBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !Sub coderoad-images-${AWS::AccountId}-${AWS::Region}
+      BucketName: !Sub coderoad-images-${AWS::AccountId}-${AWS::Region}-final-project
       PublicAccessBlockConfiguration:
         BlockPublicAcls: true
         BlockPublicPolicy: true
