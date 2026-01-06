@@ -66,7 +66,24 @@ Resources:
           Properties:
             RestApiId: !Ref Api
             Path: /files
-            Method: POST         
+            Method: POST
+
+  DownloadFileFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: download.handler
+      Role: !GetAtt LambdaS3Role.Arn
+      Environment:
+        Variables:
+          BUCKET_NAME: !Ref ImagesBucket
+      Events:
+        DownloadApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref Api
+            Path: /files/{objectKey}
+            Method: GET                   
 
    
 Outputs:
