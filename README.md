@@ -3,7 +3,9 @@
 This project provides a serverless backend on AWS for generating S3 presigned URLs. It allows clients to securely upload and download files directly to and from an S3 bucket without needing AWS credentials.
 
 ## Architecture
-![project architecture] (assets/project_architecture.png)
+<div align="center">
+  <img src="assets/project_architecture.png" alt="Description of my image" width="400"/>
+</div>
 The architecture consists of the following components:
 
 1.  **Amazon API Gateway:** Exposes two HTTP endpoints:
