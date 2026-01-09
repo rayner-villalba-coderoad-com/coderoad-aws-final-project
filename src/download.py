@@ -36,7 +36,6 @@ def handler(event, context):
     except Exception as e:
         return error(500, str(e))
 
-
 def error(status_code, message):
     return {
         "statusCode": status_code,
