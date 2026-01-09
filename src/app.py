@@ -3,7 +3,7 @@ import os
 import boto3
 
 s3 = boto3.client("s3")
-BUCKET_NAME = os.environ["BUCKET_NAME"]
+BUCKET_NAME = os.environ("BUCKET_NAME")
 
 def handler(event, context):
     try:
@@ -17,19 +17,18 @@ def handler(event, context):
 
         object_key = f"uploads/{file_name}"
 
-        presigned_post = s3.generate_presigned_post(
-            Bucket=BUCKET_NAME,
-            Key=object_key,
-            Fields={"Content-Type": content_type},
-            Conditions=[
-                {"Content-Type": content_type}
-            ],
+        presigned_url = s3.generate_presigned_url(
+            ClientMethod="put_object",
+            Params={
+                "Bucket": BUCKET_NAME,
+                "Key": object_key,
+                "ContentType": content_type
+            },
             ExpiresIn=300
         )
 
         return response(200, {
-            "url": presigned_post["url"],
-            "fields": presigned_post["fields"],
+            "uploadUrl": presigned_url,
             "objectKey": object_key
         })
 
