@@ -19,11 +19,11 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: !Sub coderoad-images-${AWS::AccountId}-${AWS::Region}-final-project
-      PublicAccessBlockConfiguration:
-        BlockPublicAcls: true
-        BlockPublicPolicy: true
-        IgnorePublicAcls: true
-        RestrictPublicBuckets: true
+      # PublicAccessBlockConfiguration:
+      #   BlockPublicAcls: true
+      #   BlockPublicPolicy: true
+      #   IgnorePublicAcls: true
+      #   RestrictPublicBuckets: true
   
   LambdaS3Role:
     Type: AWS::IAM::Role
