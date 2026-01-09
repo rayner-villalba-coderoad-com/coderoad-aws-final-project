@@ -1,7 +1,10 @@
 # Coderoad AWS Final Project - S3 Signed URL File Gateway
 
 This project provides a serverless backend on AWS for generating S3 presigned URLs. It allows clients to securely upload and download files directly to and from an S3 bucket without needing AWS credentials.
-
+## Online Documentation
+You can find the online documentation for this project here:
+- https://docs.google.com/document/d/1mL9_3tTR3JMXDax7742UY0m6C7m6iBHpKCpNqacT1yQ/edit?usp=sharing
+----
 ## Architecture
 The architecture consists of the following components:
 
