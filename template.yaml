@@ -81,7 +81,7 @@ Resources:
           Type: Api
           Properties:
             RestApiId: !Ref Api
-            Path: /files/{objectKey+}
+            Path: /files/{objectKey}
             Method: GET                   
    
 Outputs:
