@@ -46,6 +46,11 @@ Resources:
             Statement:
               - Effect: Allow
                 Action:
+                  - s3:ListBucket
+                Resource: !GetAtt ImagesBucket.Arn
+              
+              - Effect: Allow
+                Action:
                   - s3:PutObject
                   - s3:GetObject
                 Resource: !Sub "${ImagesBucket.Arn}/*"
