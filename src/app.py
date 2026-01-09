@@ -1,6 +1,5 @@
 import json
 import os
-#import uuid
 import boto3
 
 s3 = boto3.client("s3")
@@ -16,22 +15,21 @@ def handler(event, context):
         if not file_name:
             return response(400, {"message": "fileName is required"})
 
-        #extension = file_name.split(".")[-1]
-        #object_key = f"uploads/{uuid.uuid4()}.{extension}"
         object_key = f"uploads/{file_name}"
 
-        presigned_url = s3.generate_presigned_url(
-            ClientMethod="put_object",
-            Params={
-                "Bucket": BUCKET_NAME,
-                "Key": object_key,
-                "ContentType": content_type
-            },
+        presigned_post = s3.generate_presigned_post(
+            Bucket=BUCKET_NAME,
+            Key=object_key,
+            Fields={"Content-Type": content_type},
+            Conditions=[
+                {"Content-Type": content_type}
+            ],
             ExpiresIn=300
         )
 
         return response(200, {
-            "uploadUrl": presigned_url,
+            "url": presigned_post["url"],
+            "fields": presigned_post["fields"],
             "objectKey": object_key
         })
 

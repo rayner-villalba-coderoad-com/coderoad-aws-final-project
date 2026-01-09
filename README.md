@@ -1,11 +1,8 @@
-# Coderoad AWS Final Project - S3 Presigned URL Generator
+# Coderoad AWS Final Project - S3 Signed URL File Gateway
 
 This project provides a serverless backend on AWS for generating S3 presigned URLs. It allows clients to securely upload and download files directly to and from an S3 bucket without needing AWS credentials.
 
 ## Architecture
-<div align="center">
-  <img src="assets/project_architecture.png" alt="Description of my image" width="400"/>
-</div>
 The architecture consists of the following components:
 
 1.  **Amazon API Gateway:** Exposes two HTTP endpoints:
@@ -24,6 +21,9 @@ The flow is as follows:
 4. The URL is returned to the client.
 5. The client uses the URL to directly upload or download the file to/from S3.
 
+<div align="center">
+  <img src="assets/project_architecture.png" alt="Description of my image" width="400"/>
+</div>
 ## Project Structure
 
 ```
