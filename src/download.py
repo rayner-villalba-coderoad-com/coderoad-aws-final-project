@@ -3,7 +3,7 @@ import boto3
 import urllib.parse
 
 s3 = boto3.client("s3")
-BUCKET_NAME = os.environ["BUCKET_NAME"]
+BUCKET_NAME = os.getenv("BUCKET_NAME")
 
 def handler(event, context):
     try:
