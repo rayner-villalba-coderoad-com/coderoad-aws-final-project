@@ -19,6 +19,18 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: !Sub coderoad-images-${AWS::AccountId}-${AWS::Region}-final-project
+      CorsConfiguration:
+        CorsRules:
+          - AllowedHeaders:
+              - "*"
+            AllowedMethods:
+              - GET
+              - PUT
+              - POST
+              - HEAD
+            AllowedOrigins:
+              - "*"  # In production, replace with your specific domain like https://example.com
+            MaxAge: 3000
       # PublicAccessBlockConfiguration:
       #   BlockPublicAcls: true
       #   BlockPublicPolicy: true
